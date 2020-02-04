@@ -16,6 +16,6 @@ export class EmployeeRepository {
     }
 
     public async delete(id: string): Promise<void> {
-        await EmployeeModel.deleteOne(id);
+        await EmployeeModel.deleteOne({_id : id});
     }
 }

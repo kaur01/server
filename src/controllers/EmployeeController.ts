@@ -31,8 +31,8 @@ export class EmployeeController {
     }
 
     @httpPost('')
-    public async create(@requestBody() reqBody: { name: string, dateOfBirth: Date }, @response() res: Response): Promise<void> {
-        let employee = new Employee(reqBody.name, reqBody.dateOfBirth, undefined, undefined, undefined);
+    public async create(@requestBody() reqBody: { name: string, dateOfBirth: Date, salary: number, skills: number[], photo: string}, @response() res: Response): Promise<void> {
+        let employee = new Employee(reqBody.name, reqBody.dateOfBirth, reqBody.salary, reqBody.skills, reqBody.photo);
         const createdEmployee = await this.repository.create(employee);
         res.status(HttpStatusCode.Created).json(createdEmployee);
     }
@@ -43,8 +43,8 @@ export class EmployeeController {
     }
 
     @httpPut("/:id")
-    public async update(@requestParam('id') id: string, @requestBody() reqBody: { name: string, dateOfBirth: Date }, @response() response: Response) {
-        const employee = new Employee(reqBody.name, reqBody.dateOfBirth, undefined, undefined, undefined);
+    public async update(@requestParam('id') id: string, @requestBody() reqBody: { name: string, dateOfBirth: Date, salary: number, skills: number[], photo: string}, @response() response: Response) {
+        const employee = new Employee(reqBody.name, reqBody.dateOfBirth, reqBody.salary, reqBody.skills, reqBody.photo);
         await this.repository.update(employee);
         response.status(HttpStatusCode.Ok).send();
     }
