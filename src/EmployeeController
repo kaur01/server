@@ -3,7 +3,7 @@ import {HttpStatusCode} from "./HttpStatusCode";
 import {controller, httpPost, requestBody, response} from "inversify-express-utils";
 
 import EmployeeModel = require('../EmployeeModel');
-import {Employee} from "./Employee";
+import {} from "../src/*";
 
 require('express');
 require('express-validator/check');
