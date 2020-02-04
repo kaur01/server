@@ -1,7 +1,7 @@
-let Typegoose = require('typegoose');
-import {Types} from 'mongoose';
+import * as mongoose from "mongoose";
+import {Types} from "mongoose";
+import {prop, Typegoose} from "typegoose";
 
-let prop = require('typegoose');
 
 export class Employee extends Typegoose {
 
@@ -33,4 +33,20 @@ export class Employee extends Typegoose {
         this.skills = skills;
         this.photo = photo;
     }
+
+    public static from(json: any): Employee {
+        if (!json) {
+            return json;
+        }
+        return Object.assign(new Employee(), json);
+    }
 }
+
+export const EmployeeModel = new Employee().getModelForClass(Employee, {
+    existingMongoose: mongoose,
+    schemaOptions: {
+        collection: 'zet_cc_harpreet',
+        timestamps: true
+    }
+});
+

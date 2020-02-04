@@ -1,13 +1,16 @@
-import {cors} from 'cors';
+import * as cors from 'cors';
 import {Application} from 'express';
+import {Container} from 'inversify';
 import {createServer, Server} from 'https';
 import {InversifyExpressServer} from 'inversify-express-utils';
+import {ControllerModule} from "./dependency-injection/ControllerModule";
+import {RepositoryModule} from "./dependency-injection/RepositoryModule";
+import * as fs from "fs";
+import * as path from "path";
 import bodyParser = require('body-parser');
-import {ContainerBuilder} from "./dependency-injection/ContainerBuilder";
 
 export class ApplicationServer {
     private app: any;
-
 
     constructor(app: any) {
         this.app = app;
@@ -19,17 +22,20 @@ export class ApplicationServer {
     }
 
     public prepareServer(): Server {
+        const container = new Container({autoBindInjectable: true});
+        container.load(new ControllerModule(), new RepositoryModule());
 
-        const container = ContainerBuilder.build();
-        const allowedOrigins = ['http://localhost:4200'];
-        const allowedOriginRegularExpressions = allowedOrigins.map(origin => new RegExp(origin + '$'));
 
         const application = new InversifyExpressServer(container, null, {rootPath: '/api'}, this.app)
             .setConfig((app: Application) => {
                 app.use(bodyParser.json())
-                    .use(cors({origin: allowedOriginRegularExpressions}));
+                    .use(cors());
             })
             .build();
-        return createServer(application);
+
+        const sslKey = fs.readFileSync(path.resolve(process.cwd(), `client-key.pem`));
+        const sslCertificate = fs.readFileSync(path.resolve(process.cwd(), `client-cert.pem`));
+
+        return createServer({key: sslKey, cert: sslCertificate}, application);
     }
 }
