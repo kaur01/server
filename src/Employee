@@ -1,0 +1,36 @@
+let Typegoose = require('typegoose');
+import {Types} from 'mongoose';
+
+let prop = require('typegoose');
+
+export class Employee extends Typegoose {
+
+    public _id: Types.ObjectId;
+
+    @prop()
+    public name: string;
+
+    @prop()
+    public dateOfBirth: Date;
+
+    @prop()
+    public salary: number;
+
+    @prop()
+    public skills: number[];
+
+    @prop()
+    public photo: string;
+
+
+    constructor();
+    constructor(name: string, dateOfBirth: Date, salary: number, skills: number[], photo: string);
+    constructor(name?: string, dateOfBirth?: Date, salary?: number, skills?: number[], photo?: string) {
+        super();
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.salary = salary;
+        this.skills = skills;
+        this.photo = photo;
+    }
+}
