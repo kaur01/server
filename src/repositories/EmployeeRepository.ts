@@ -7,8 +7,8 @@ export class EmployeeRepository {
         return Employee.from((await EmployeeModel.create(employee)).toObject());
     }
 
-    public async update(employee: Employee): Promise<void> {
-        await EmployeeModel.findByIdAndUpdate(employee._id, employee);
+    public async update(employee: Employee): Promise<Employee> {
+        return Employee.from(await EmployeeModel.update({_id: employee._id}, employee).lean());
     }
 
     public async findAll(): Promise<Employee[]> {

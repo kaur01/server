@@ -1,7 +1,8 @@
 import {Request, Response} from 'express';
 import {HttpStatusCode} from "../HttpStatusCode";
 import {
-    controller, httpDelete,
+    controller,
+    httpDelete,
     httpGet,
     httpPost,
     httpPut,
@@ -13,6 +14,8 @@ import {
 
 import {Employee} from "../models/Employee";
 import {EmployeeRepository} from "../repositories/EmployeeRepository";
+import {Id} from "../Id";
+
 
 require('express');
 require('express-validator/check');
@@ -31,7 +34,7 @@ export class EmployeeController {
     }
 
     @httpPost('')
-    public async create(@requestBody() reqBody: { name: string, dateOfBirth: Date, salary: number, skills: number[], photo: string}, @response() res: Response): Promise<void> {
+    public async create(@requestBody() reqBody: { name: string, dateOfBirth: Date, salary: number, skills: number[], photo: string }, @response() res: Response): Promise<void> {
         let employee = new Employee(reqBody.name, reqBody.dateOfBirth, reqBody.salary, reqBody.skills, reqBody.photo);
         const createdEmployee = await this.repository.create(employee);
         res.status(HttpStatusCode.Created).json(createdEmployee);
@@ -43,10 +46,11 @@ export class EmployeeController {
     }
 
     @httpPut("/:id")
-    public async update(@requestParam('id') id: string, @requestBody() reqBody: { name: string, dateOfBirth: Date, salary: number, skills: number[], photo: string}, @response() response: Response) {
+    public async update(@requestParam('id') id: string, @requestBody() reqBody: { name: string, dateOfBirth: Date, salary: number, skills: number[], photo: string }, @response() response: Response) {
         const employee = new Employee(reqBody.name, reqBody.dateOfBirth, reqBody.salary, reqBody.skills, reqBody.photo);
-        await this.repository.update(employee);
-        response.status(HttpStatusCode.Ok).send();
+        employee._id = new Id(id);
+        const updatedEmployee = await this.repository.update(employee);
+        response.status(HttpStatusCode.Ok).json(updatedEmployee);
     }
 
     @httpDelete("/:id")
