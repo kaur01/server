@@ -18,7 +18,7 @@
     "connect-timeout": "1.9.0",
     "cors": "2.8.5",
     "enum-values": "^1.2.1",
-    "express": "4.16.4",
+    "express": "4.17.3",
     "express-http-context": "1.2.0",
     "express-validator": "5.3.1",
     "inversify": "5.0.1",
