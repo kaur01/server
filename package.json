@@ -36,7 +36,7 @@
     "@types/yargs": "12.0.2",
     "asyncawait": "1.0.7",
     "del": "3.0.0",
-    "jsonwebtoken": "~8.4.0",
+    "jsonwebtoken": "~9.0.0",
     "reflect-metadata": "0.1.13",
     "supertest": "4.0.2",
     "ts-node": "7.0.1",
